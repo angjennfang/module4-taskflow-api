@@ -2,6 +2,69 @@
 
 A Java REST API for managing tasks. Built with Spring Boot, it provides endpoints to create, retrieve, update, complete, and delete tasks. It can also generate a plain-English task summary using Spring AI and an OpenRouter-compatible chat model.
 
+## Live application
+
+Hosting platform: Render
+
+This deployment uses Render rather than Railway.
+
+### GET endpoints
+
+Click these links to view the responses:
+
+- [List All Tasks](https://taskflow-6gdv.onrender.com/api/tasks)
+- [Get Task 1](https://taskflow-6gdv.onrender.com/api/tasks/1)
+- [AI Task Summary](https://taskflow-6gdv.onrender.com/api/tasks/summary)
+
+### Create a task - POST
+
+Run in your terminal:
+
+```bash
+curl -i -X POST https://taskflow-6gdv.onrender.com/api/tasks \
+  -H "Content-Type: application/json" \
+  -d '{"title":"Test task","description":"Test the live API","completed":false}'
+```
+
+Use the ID returned when creating a task instead of `1` below.
+The "Get Task 1" link also requires a task with ID 1 to exist.
+
+### Update a task - PUT
+
+```bash
+curl -i -X PUT https://taskflow-6gdv.onrender.com/api/tasks/1 \
+  -H "Content-Type: application/json" \
+  -d '{"title":"Updated task","description":"Updated description","completed":false}'
+```
+
+### Mark a task as complete - PUT
+
+```bash
+curl -i -X PUT https://taskflow-6gdv.onrender.com/api/tasks/1/complete
+```
+
+### Delete a task - DELETE
+
+```bash
+curl -i -X DELETE https://taskflow-6gdv.onrender.com/api/tasks/1
+```
+
+**Notes:**
+
+- Browser links send GET requests only.
+- The AI summary requires `OPENROUTER_API_KEY` to be configured on Render.
+- Tasks are stored in memory and disappear when the application restarts.
+
+## Screenshots
+
+### Render deployment dashboard
+
+![Render dashboard](screenshots/render-dashboard.png)
+
+### Live tasks API
+
+![Live API](screenshots/live-api.png)
+
 ## Key features
 
 - Create tasks with a title and description.
@@ -26,7 +89,7 @@ A Java REST API for managing tasks. Built with Spring Boot, it provides endpoint
 
    ```bash
    git clone <repository-url>
-   cd taskflow-api
+   cd module4-taskflow-api
    ```
 
 2. Set your OpenRouter API key as an environment variable. Do not commit your key to the repository.
