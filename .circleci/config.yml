@@ -71,7 +71,7 @@ workflows:
             branches:
               only: main
       - publish:
-          context: docker-hub
+          context: taskflow-api
           requires:
             - test
           filters:
