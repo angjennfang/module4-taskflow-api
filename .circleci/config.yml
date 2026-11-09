@@ -18,22 +18,40 @@ jobs:
             - ~/.m2/repository
           key: maven-v1-{{ checksum "pom.xml" }}
 
-  test:
+    test:
     docker:
       - image: cimg/openjdk:21.0
+      - image: postgres:16
+        environment:
+          POSTGRES_DB: taskflow_test
+          POSTGRES_USER: taskflow_test
+          POSTGRES_PASSWORD: ci-test-only-password
+
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5432/taskflow_test
+      SPRING_DATASOURCE_USERNAME: taskflow_test
+      SPRING_DATASOURCE_PASSWORD: ci-test-only-password
+      OPENROUTER_API_KEY: ci-placeholder-not-a-real-key
+
     steps:
       - checkout
+
       - restore_cache:
           keys:
             - maven-v1-{{ checksum "pom.xml" }}
             - maven-v1-
+
+      - run:
+          name: Wait for PostgreSQL
+          command: dockerize -wait tcp://localhost:5432 -timeout 60s
+
       - run:
           name: Run automated tests
-          environment:
-            OPENROUTER_API_KEY: ci-placeholder-not-a-real-key
           command: bash ./mvnw -B verify
+
       - store_test_results:
           path: target/surefire-reports
+
       - store_artifacts:
           path: target/surefire-reports
 

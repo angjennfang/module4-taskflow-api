@@ -24,7 +24,7 @@ public class TaskService {
     }
 
     public Task findTaskById(Long id) {
-        return taskRepository.findById(id);
+        return taskRepository.findById(id).orElse(null);
     }
 
     public Task createTask(Task task) {
@@ -33,7 +33,7 @@ public class TaskService {
     }
 
     public Task updateTask(Long id, Task task) {
-        Task existing = taskRepository.findById(id);
+        Task existing = taskRepository.findById(id).orElse(null);
         if (existing == null) {
             return null;
         }
@@ -48,7 +48,7 @@ public class TaskService {
     }
 
     public Task markTaskAsComplete(Long id) {
-        Task task = taskRepository.findById(id);
+        Task task = taskRepository.findById(id).orElse(null);
         if (task == null) {
             return null;
         }
