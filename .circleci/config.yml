@@ -18,7 +18,7 @@ jobs:
             - ~/.m2/repository
           key: maven-v1-{{ checksum "pom.xml" }}
 
-    test:
+  test:
     docker:
       - image: cimg/openjdk:21.0
       - image: postgres:16
